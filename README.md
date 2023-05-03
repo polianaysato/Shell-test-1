@@ -1,228 +1,105 @@
-# AWS API Gateway using AWS Lambda
+# serverless-rest-api
 
-The goal of this sample is to show my attemp at creating some continuous delivery process for AWS API Gateway and the issue I'm facing. This is achieved using AWS S3, CodePipeline, CodeBuild and CloudFormation.
+A video-series based tutorial on how to create a serverless REST API using AWS and Python Programming Language.
 
-Everything that's mentioned in this tutorial is considered in the eu-west-1 region.
+[Playlist](https://www.youtube.com/playlist?list=PLyb_C2HpOQSDlnrNJ_ERqTAkIe21xyRhi)
 
-Prior to trying the example, fork the repo.
+[![](https://i.imgur.com/6ipNjSS.png)](https://www.youtube.com/playlist?list=PLyb_C2HpOQSDlnrNJ_ERqTAkIe21xyRhi)
 
-The issue I'm facing when deploying is that the Lambdas are properly updated but not the API definition. From what I understand, the AWS::ApiGateway::Deployment are immutable resources which means that for each deployment of the API I need to create a new AWS::ApiGateway::Deployment resource. This is not practical at all because for each of this AWS::ApiGateway::Deployment I have a new Invoke URL. This is not acceptable since I would have to either change my DNS record to the newly deployed API invoke URL or ask our API users to change the URL in their applications.
+## Part 1: Introduction to AWS
 
-What I would like is to be able to change the API definition and the Lambdas implementations without my API users having to change anything in their applications.
+[Video](https://youtu.be/bw1gfnLSmd0)
 
-How can I achieve this behavior?
+A brief introduction to Amazon Web Service (AWS).
 
-## How to deploy this API using AWS CodePipeline
+**Relevant links:**
+- [AWS Overview](https://aws.amazon.com/)
+- [AWS Free Tier](https://aws.amazon.com/free/)
+- [AWS Educate](https://aws.amazon.com/education/awseducate/)
 
-### S3 Bucket for the CodeBuild artifacts
 
-First thing is to create a S3 bucket in which CodeBuild will be able to upload the artifact it computes.
+## Part 2: Introduction to AWS Lambda
 
-You can find a tutorial at: http://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html
+[Video](https://youtu.be/sTr30oviyHc)
 
-### Update your buildspec.yml
+A brief introduction and demo of AWS Lambda.
+> AWS Lambda lets you run code without provisioning or managing servers. You pay only for the compute time you consume.
 
-The file buildspec.yml is used to build the project, install dependencies, process the CloudFormation template,... In this file, you need to replace the YOUR_BUCKET_NAME by the name of the bucket created at the previous step.
+**Relevant links:**
+- [What is serverless?](https://aws.amazon.com/serverless/)
+- [AWS Lambda Overview](https://aws.amazon.com/lambda/)
 
-### Create your Pipeline in CodePipeline
 
-Go to the CodePipeline home page: https://eu-west-1.console.aws.amazon.com/codepipeline/home?region=eu-west-1#/dashboard
+## Part 3: Introduction to Amazon API Gateway
 
-Click the "Create pipeline" button.
+[Video](https://youtu.be/FbfV9N_va7Y)
 
-![CodePipeline home page](screenshots/1.png)
+A brief introduction and demo of API Gateway.
+> Amazon API Gateway is a fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale.
 
-Enter the name of your Pipeline. It's "NiceAPI-Builder" in the example.
+**Relevant links:**
+- [API Gateway Overview](https://aws.amazon.com/api-gateway/)
+- [API Gateway - Lambda Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-lambda-integration.html)
 
-![Name your Pipeline](screenshots/2.png)
+## Part 4: Introduction to AWS CloudFormation
 
-#### Source
+[Video](https://youtu.be/dT9ymsYVVu8)
 
-Select the source of the Pipeline. It's GitHub in our current case.
+A brief introduction and demo of AWS CloudFormation.
+> AWS CloudFormation provides a common language for you to model and provision AWS and third party application resources in your cloud environment.
 
-![Select the source of your Pipeline](screenshots/3.png)
+**Relevant links:**
+- [AWS CloudFormation Overview](https://aws.amazon.com/cloudformation/)
+- [Sample Template](https://gist.github.com/nikhilkumarsingh/8c97ed8bb0153d953377898328ab375a)
 
-Allow AWS CodePipeline to access your GitHub account.
+## Part 5: Project Setup using AWS SAM
 
-![GitHub permissions](screenshots/4.png)
+[Video](https://www.youtu.be/BiV-kdQbEo0)
 
-Select the repository and the branch from which CodePipeline will get the sources. Each new commit in this branch will trigger the execution of the Pipeline.
+Setting up the project for a serverless application using AWS SAM.
 
-![Repository selection](screenshots/5.png)
+> You can use AWS SAM to define your serverless applications. AWS SAM consists of the following components:
+>- **AWS SAM template specification:** You use this specification to define your serverless application. It provides you with a simple and clean syntax to describe the functions, APIs, permissions, configurations, and events that make up a serverless application.
+>- **AWS SAM command line interface:** (AWS SAM CLI). You use this tool to build serverless applications that are defined by AWS SAM templates.
 
-#### Build
+**Relevant links:**
+- [What is AWS SAM?](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+- [Sample Tutorial](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html)
 
-Select AWS CodeBuild as the build provider, select "Create a new build project" and enter a project name. It's NiceAPI in our current case.
 
-![CodeBuild](screenshots/6.png)
+## Part 6: Flask Lambda Integration
 
-Select the operating system, the runtime and its version into which the project will be build. Ubuntu and Python 2.7.12 in our current case. Then click the "Save build project".
+[Video](https://youtu.be/I93i7KGggcg)
 
-![CodeBuild environment](screenshots/7.png)
+Integrating Flask with AWS Lambda.
 
-Wait for the project to be saved and click the "Next step" button.
+**Relevant links:**
+- [flask-lambda-python36](https://pypi.org/project/flask-lambda-python36/)
+- [Code](https://github.com/nikhilkumarsingh/serverless-student-api/tree/f6db43b9f7fab4dd89606f8052e7d657fbd89745)
 
-![CodeBuild next step](screenshots/8.png)
 
-#### Deploy
+## Part 7: Introduction to DynamoDB
 
-We will use CloudFormation as the deployment provider. Fill the form as displayed in the screenshot below. Then click the "Next step" button.
+[Video](https://youtu.be/vHMvobBbQJc)
 
-Pay attention to the Role name you enter at this point, you'll need to grant him the permission to putObject in the S3 bucket created at the beginning of the tutorial.
+A brief introduction and demo of DynamoDB. Learn how to interact with DynamoDB using Python.
 
-If you don't, you'll encounter the error:
+> Amazon DynamoDB is a key-value and document database that delivers single-digit millisecond performance at any scale.
 
-	Unable to upload artifact None referenced by Code parameter of APILambdaFunction resource. An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+**Relevant links:**
+- [DynamoDB Overview](https://aws.amazon.com/dynamodb/)
+- [Boto3 Quickstart](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)
+- [Boto3 DynamoD Docs](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html)
+- [Tutorial Notebook](https://gist.github.com/nikhilkumarsingh/ff0261d6a3f6894c7ec0bb61deb990e0)
 
-![CloudFormation as deployment provider](screenshots/9.png)
 
-#### Service Role
+## Part 8: Flask DynamoDB Integration
 
-You must create a service role for CodePipeline to be able to use resources in your account. Then click the "Next step" button.
+[Video](https://youtu.be/8O8VNuYyplU)
 
-![CodePipeline service role](screenshots/10.png)
+Integrating DynamoDB in serverless REST API.
 
-The Pipeline is now created but still lack one action.
-
-![CodePipeline created](screenshots/11.png)
-
-#### Deploy action
-
-One action is still missing in your Pipeline. The action that actualy apply the ChangetSet computed to the CloudFormation Stack. Click the "Edit" button.
-
-![CodePipeline created](screenshots/11.png)
-
-Click the "+ stage" button, name the stage as "Deploy" and then click the "+ action" button.
-
-![Deploy action creation](screenshots/12.png)
-
-Configure the action as displayed in the screenshots below.
-
-![Deploy action configuration 1](screenshots/13.png)
-
-Click the "Add action" button.
-
-![Deploy action configuration 2](screenshots/14.png)
-
-Click the "Save pipeline changes" button.
-
-![Deploy action configuration 2](screenshots/15.png)
-
-#### S3 permission
-
-As said previously, you need to grant the permission to putObject in the S3 bucket created at the beginning of the tutorial to the role used for deployment.
-
-#### Use the Pipeline
-
-To deploy the API using the Pipeline, you need to click the "Release change" button. This is only needed if you want to trigger the release manually. The Pipeline will be trigerred at each commit in the future.
-
-![Deploy the API](screenshots/16.png)
-
-#### API Gateway
-
-Once the Pipeline has completed its deployment, you can see your newly created API at: https://eu-west-1.console.aws.amazon.com/apigateway/home?region=eu-west-1#/apis
-
-![API list](screenshots/17.png)
-
-You can see the resources created.
-
-![API resources](screenshots/18.png)
-
-You can see the API deployment and API stage created.
-
-![API deployments](screenshots/19.png)
-
-## The issue with subsequent deployments
-
-You can find the invoke URL in the APIStage in the AWS console.
-
-![Invoke URL](screenshots/20.png)
-
-Let's test our API using curl:
-
-	curl -X GET -H "Content-Type: application/json" -H "X-API-key: some_api_key" INVOKE_URL/collection/SOME_RANDOM_ID/items
-	{"code": 200, "results": "A nice API"}
-
-Let's have a look at the CloudWatch logs. Among other things, we can see:
-
-	Launched with event:
-	{
-	    "body": {},
-	    "headers": {
-	        "Content-Type": "application/json",
-	        "Via": "*********",
-	        "CloudFront-Is-Desktop-Viewer": "true",
-	        "CloudFront-Is-SmartTV-Viewer": "false",
-	        "CloudFront-Forwarded-Proto": "https",
-	        "X-Forwarded-For": "******, ******",
-	        "CloudFront-Viewer-Country": "BE",
-	        "Accept": "*/*",
-	        "User-Agent": "curl/7.51.0",
-	        "X-Amzn-Trace-Id": "Root=******",
-	        "Host": "******.execute-api.eu-west-1.amazonaws.com",
-	        "X-Forwarded-Proto": "https",
-	        "X-Amz-Cf-Id": "******",
-	        "CloudFront-Is-Tablet-Viewer": "false",
-	        "X-Forwarded-Port": "443",
-	        "X-API-key": "some_api_key",
-	        "CloudFront-Is-Mobile-Viewer": "false"
-	    },
-	    "params": {
-	        "collectionId": "SOME_RANDOM_ID"
-	    },
-	    "method": "GET",
-	    "query": {}
-	}
-
-Now I replace the content of the example.yml file by the content of the second_example.yml . In second_example.yml I remove the requestTemplates from the methods definitions.
-I then commit the changes. I push them to the repo. It triggers the Pipeline and I wait for the API to be deployed again.
-
-When I test the API again using curl, it gives me the same result as previously in the CloudWatch logs:
-
-	Launched with event:
-	{
-	    "body": {},
-	    "headers": {
-	        "Content-Type": "application/json",
-	        "Via": "*********",
-	        "CloudFront-Is-Desktop-Viewer": "true",
-	        "CloudFront-Is-SmartTV-Viewer": "false",
-	        "CloudFront-Forwarded-Proto": "https",
-	        "X-Forwarded-For": "******, ******",
-	        "CloudFront-Viewer-Country": "BE",
-	        "Accept": "*/*",
-	        "User-Agent": "curl/7.51.0",
-	        "X-Amzn-Trace-Id": "Root=******",
-	        "Host": "******.execute-api.eu-west-1.amazonaws.com",
-	        "X-Forwarded-Proto": "https",
-	        "X-Amz-Cf-Id": "******",
-	        "CloudFront-Is-Tablet-Viewer": "false",
-	        "X-Forwarded-Port": "443",
-	        "X-API-key": "some_api_key",
-	        "CloudFront-Is-Mobile-Viewer": "false"
-	    },
-	    "params": {
-	        "collectionId": "SOME_RANDOM_ID"
-	    },
-	    "method": "GET",
-	    "query": {}
-	}
-
-The expected result is:
-
-	Launched with event:
-	{
-	}
-
-since I removed the requestTemplates from the method definitions in the API. This means that the API definition is not updated from one Pipeline execution to the other.
-
-How can I achieve this behavior?
-
-## Interesting reads
-
-* https://kennbrodhagen.net/2015/12/06/how-to-create-a-request-object-for-your-lambda-event-from-api-gateway/
-* https://forums.aws.amazon.com/thread.jspa?messageID=750845&#750845
-
-
-
-
+**Relevant links:**
+- [DynamoDB Table CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html)
+- [AWS SAM Policy Templates](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html)
+- [Code](https://github.com/nikhilkumarsingh/serverless-rest-api/tree/8cbf97ef3da3fce39ed170ab6c0681ed8fb8c34d)
