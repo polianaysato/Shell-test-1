@@ -10,11 +10,11 @@ phases:
     commands:
       - echo "Zipping deployment package..."
       - cd lib
-      - zip -r9 ../shelltest.zip .
+      - zip -r9 ../shell-test.zip .
       - cd ..
-      - zip -g shelltest.zip lambda_function.py
+      - zip -g shell-test.zip lambda_function.py
   post_build:
     commands:
       - echo "Updating lambda Function..."
-      - aws lambda update-function-code --function-name "shell-orbital" --zip-file "fileb://./app.zip" --region "eu-west-2"
+      - aws lambda update-function-code --function-name "shell-orbital" --zip-file "fileb://./shell-test.zip" --region "eu-west-2"
       - echo "DONE!!"
