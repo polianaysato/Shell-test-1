@@ -16,5 +16,5 @@ phases:
   post_build:
     commands:
       - echo "Updating lambda Function..."
-      - aws lambda update-function-code --function-name shell-lambda --zip-file fileb://shelltest.zip
+      - aws lambda update-function-code --function-name "shell-orbital" --zip-file "fileb://./app.zip" --region "eu-west-2"
       - echo "DONE!!"
