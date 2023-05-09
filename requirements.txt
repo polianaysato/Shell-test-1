@@ -1,1 +1,7 @@
-pandas==1.2.1
+scipy
+pandas
+numpy
+boto3
+datetime
+pytz
+xlrd

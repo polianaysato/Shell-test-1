@@ -5,7 +5,7 @@ Command line interface for calculating present value of options using data from 
 from datetime import datetime
 from scipy.stats import norm
 import numpy
-from options_price.file_reader import FileReader
+from file_reader import FileReader
 
 """
 Display logs in console and exports them to a file.
@@ -30,6 +30,7 @@ class OptionsPricing:
         """
         self.file_reader = FileReader(filename)
         self.volatility, self.market_data = self.file_reader._read_file()
+        self.formula_values = self._set_formula_values()
 
     def _set_formula_values(self):
         self.risk_free_continuous_compoud = numpy.log(1+self.market_data['Daily Risk Free Rate'][0])
@@ -43,6 +44,15 @@ class OptionsPricing:
         self.norm_d1 = norm.cdf(self.d1)
         self.norm_d2 = norm.cdf(self.d2)
         self.discount_factor = numpy.exp(-self.risk_free_continuous_compoud * (self.market_data['Time to Expire'][0] + 2/52))
+        formula_values = {
+            "risk_free_continuous_compound": self.risk_free_continuous_compoud,
+            "ln_Futures_Strike": self.ln_Futures_Strike,
+            "e_continuous": self.e_continuous,
+            "norm_d1": norm.cdf(self.d1),
+            "norm_d2": norm.cdf(self.d2),
+            "discount_factor": self.discount_factor
+        }
+        return formula_values
     
     def _calculate_call_present_value(self):
         self.call_present_value = self.discount_factor * (self.market_data['Future Price'][0] * self.norm_d1 - self.market_data['Strike'][0] * self.norm_d2)
@@ -56,5 +66,7 @@ class OptionsPricing:
         """
         Runs the options price script
         """
-        self._set_formula_values()
-        self._calculate_call_present_value()
+        if self.market_data['Type'] == 'Call':
+            return self._calculate_call_present_value()
+        else:
+            return self._calculate_put_present_value()

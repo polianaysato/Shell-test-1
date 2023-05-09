@@ -25,10 +25,6 @@ class FileReader:
     MAX_NUM_DAILY_DATA_REFERENCE = 'B9'
     ALL = 'ALL'
     MAXIMUM_DAILY_DATA_PER_SHEET = 366
-    COLUMN_CONFIGURATION = [
-        ColumnConfig('Date', 'date', ALL),
-        ColumnConfig('Price', 'price', ALL)
-    ]
 
     def __init__(self, path):
         """
