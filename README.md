@@ -44,11 +44,8 @@ aws lambda create-function \
   --role arn:aws:iam::<your AWS account id>:role/{your own role}
 
 ### Note: if you build your docker image in a arm64 architecture device, you'll need to change the architecture for your lambda in console. Go to your lambda function, hit 'Deploy new image' button, select arm64 architecture and save. Also, increase the Timeout in the Configuration panel.
-
-![PUT Postman](assets/lambda.png)
-
 ```
-
+![PUT Postman](assets/lambda.png)
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
