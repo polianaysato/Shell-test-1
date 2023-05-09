@@ -16,6 +16,9 @@ POST: https://n1r7e06ve8.execute-api.eu-west-2.amazonaws.com/Dev/
 ### You can pass your json body as in the image
 ![POST Postman](assets/post.png)
 
+## Spreadsheet with market data
+Download the spreadsheet MarketData.xls from this repo and fill in the data necessary for the calculation before uploading.
+
 ### Prerequisites for creating a lambda container image
 For creating a lambda container image, you need to have installed Docker and have previously created a role with the required permissions for ECR, Lambda and API attached to the services. 
 
