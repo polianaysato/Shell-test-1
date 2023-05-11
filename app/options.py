@@ -50,9 +50,10 @@ class OptionsPricing:
             "e_continuous": self.e_continuous,
             "norm_d1": norm.cdf(self.d1),
             "norm_d2": norm.cdf(self.d2),
-            "discount_factor": self.discount_factor
+            "discount_factor": self.discount_factor,
+            
         }
-        return formula_values
+        return formula_values, self.market_data
     
     def _calculate_call_present_value(self):
         self.call_present_value = self.discount_factor * (self.market_data['Future Price'][0] * self.norm_d1 - self.market_data['Strike'][0] * self.norm_d2)
