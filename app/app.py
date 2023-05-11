@@ -23,11 +23,8 @@ def handler(event, context):
             formula_values, market_data = options._set_formula_values()
             option_value = options.run()
             output = { "option value": option_value, "formula values": formula_values }
-        else:
-            filename = event['filename']
-            s3_object = S3_BUCKET.Object(filename).get()
-            data = s3_object['Body'].read()
-            options = OptionsPricing(data)
+        elif event.get('http_method') == 'GET':
+            formula_values, market_data = options._set_formula_values()
             output = { 
                 "option": market_data['Option'][0],
                 "future price": market_data['Future Price'][0],
@@ -35,7 +32,6 @@ def handler(event, context):
                 "risk free rate": market_data['Risk Free Rate'][0],
                 "type": market_data['Type'][0],
                 "number of daily data": market_data['Number of Daily Data'][0]
-
              }
         return {
             "statusCode": 200,
@@ -45,5 +41,5 @@ def handler(event, context):
 
     except Exception as e:
         print("An exception occurred: ", e)
-        return 
+        raise
     

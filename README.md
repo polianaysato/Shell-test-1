@@ -2,6 +2,8 @@
 
 options-present-value is a Python REST API that returns the present value of CALL and PUT options.
 
+Note: Unit tests are still to be done, this work focused more on the REST API implementation due to time balance between client and this test
+
 ## endpoint 
 
 ### For uploading your spreadsheet with market data, you can use the endpoint below in Postman
