@@ -11,12 +11,6 @@ from file_reader import FileReader
 Display logs in console and exports them to a file.
 """
 
-
-class OptionsPricingError(Exception):
-    """
-    Custom exception used by the options price CLI.
-    """
-
 class OptionsPricing:
     """
     Performs options pricing with market data from a xlsx file.
@@ -50,8 +44,7 @@ class OptionsPricing:
             "e_continuous": self.e_continuous,
             "norm_d1": norm.cdf(self.d1),
             "norm_d2": norm.cdf(self.d2),
-            "discount_factor": self.discount_factor,
-            
+            "discount_factor": self.discount_factor
         }
         return formula_values, self.market_data
     
@@ -67,7 +60,11 @@ class OptionsPricing:
         """
         Runs the options price script
         """
-        if self.market_data['Type'] == 'Call':
-            return self._calculate_call_present_value()
-        else:
-            return self._calculate_put_present_value()
+        try: 
+            if self.market_data['Type'] == 'Call':
+                return self._calculate_call_present_value()
+            else:
+                return self._calculate_put_present_value()
+        except Exception as e:
+            print("An exception occurred: ", e)
+            raise
