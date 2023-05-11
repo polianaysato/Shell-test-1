@@ -5,13 +5,13 @@ options-present-value is a Python REST API that returns the present value of CAL
 ## endpoint 
 
 ### For uploading your spreadsheet with market data, you can use the endpoint below in Postman
-PUT: https://n4sj6cm9q7.execute-api.us-east-1.amazonaws.com/Dev/shell-test-lambda/<your file name>
+PUT: https://n4sj6cm9q7.execute-api.us-east-1.amazonaws.com/Dev/shell-test-lambda/your file name
 
 ### For the upload, we need to change the body to binary
 ![PUT Postman](assets/put.png)
 
 ### After you upload your market data spreadsheet, you can retrieve the market data this GET API 
-GET: https://n1r7e06ve8.execute-api.eu-west-2.amazonaws.com/Dev?filename=<your filename>
+GET: https://n1r7e06ve8.execute-api.eu-west-2.amazonaws.com/Dev?filename=your filename
 
 ### After you upload your market data spreadsheet, you can call this POST API to get the present value
 POST: https://n1r7e06ve8.execute-api.eu-west-2.amazonaws.com/Dev/
