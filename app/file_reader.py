@@ -4,17 +4,6 @@ Helper module for reading data from an Excel spreadsheet.
 import pandas as pd
 import math
 
-class OptionsPricingError(Exception):
-    """
-    Custom exception used by the options price CLI.
-    """
-
-class UnexpectedHeadersError(OptionsPricingError):
-    """Raised when unexpected headers are found in a sheet"""
-
-class BeyondLimitError(OptionsPricingError):
-    """Raised when too much daily market data is present on a sheet"""
-
 
 class FileReader:
     """
