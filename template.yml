@@ -1,0 +1,33 @@
+Resources:
+  GetMarketData:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      ImageConfig:
+        Command: [ "app.get_market_data" ]
+      Events:
+        Options:
+          Type: Api
+          Properties:
+            Path: /filename
+            Method: get
+    Metadata:
+      DockerTag: python3.x-v1-1
+      DockerContext: ./options
+      Dockerfile: Dockerfile
+  HelloWorldFunction2:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      ImageConfig:
+        Command: [ "app.post_option_present_value" ]
+      Events:
+        Options:
+          Type: Api
+          Properties:
+            Path: /
+            Method: post
+    Metadata:
+      DockerTag: python3.x-v1-2
+      DockerContext: ./options
+      Dockerfile: Dockerfile
